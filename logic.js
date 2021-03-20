@@ -1,3 +1,12 @@
+// Create our map, giving it the streetmap and earthquakes layers to display on load
+var myMap = L.map("map", {
+  center: [
+    37.09, -95.71
+  ],
+  zoom: 5
+  // layers: [streetmap, earthquakes]
+});
+
 // Store our API endpoint inside queryUrl
 var queryUrl = "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_week.geojson";
 
@@ -88,15 +97,7 @@ function createMap(earthquakes) {
   //   Earthquakes: earthquakes
   // };
 
-  // Create our map, giving it the streetmap and earthquakes layers to display on load
-  var myMap = L.map("map", {
-    center: [
-      37.09, -95.71
-    ],
-    zoom: 5
-    // layers: [streetmap, earthquakes]
-  });
-
+  
   // Create a layer control
   // Pass in our baseMaps and overlayMaps
   // Add the layer control to the map
