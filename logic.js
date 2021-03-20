@@ -4,7 +4,38 @@ var queryUrl = "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_we
 // Perform a GET request to the query URL
 d3.json(queryUrl, function(data) {
   // Once we get a response, send the data.features object to the createFeatures function
-  createFeatures(data.features);
+  // createFeatures(data.features);
+  // Create circles from query URL and set style
+    function mapCircles(feature) {
+      return {
+        opacity: 1,
+        fillOpacity: 1,
+        fillColor: getColor(feature.properties.mag),
+        color: "#000000",
+        radius: getRadius(feature.properties.mag),
+        stroke: true,
+        weight: 0.5
+      };
+    }
+
+  // Function to change color based on magnitude of earthquake
+  function circleColor(magnitude) {
+    switch(true) {
+      case magnitude > 5: 
+        return "#ed0909";
+      case magnitude > 4: 
+        return "#ed6c09";
+      case magnitude > 3:
+        return "#eda909";
+      case magnitude > 2:
+        return "#fff41c";
+      case magnitude > 1:
+        return "#b7ff1c";
+      default: 
+        return "#2c99ea";
+    }
+  }
+  // Function to make magnitude to radius
 });
 
 function createFeatures(earthquakeData) {
