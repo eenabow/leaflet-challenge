@@ -21,7 +21,7 @@ function circleColor(magnitude) {
     case magnitude > 1:
       return "#b7ff1c";
     default:
-      return "#2c99ea";
+      return "#2cea94";
   }
 };
 
@@ -42,8 +42,8 @@ function mapCircles(feature, location) {
     fillColor: circleColor(feature.properties.mag),
     radius: circleRadius(feature.properties.mag),
     stroke: true,
-      weight: 0.5,
-      color:"#000000"
+    weight: 0.5,
+    color: "#000000"
   }
 
   return L.circleMarker(location, options);
@@ -85,19 +85,34 @@ function createMap(earthquakes) {
     layers: [lightmap, earthquakes]
   });
 
-  //Create the legned
- var legend = L.control({ position: 'bottomright' });
+
+  grades = [5, 4, 3, 2, 1];
+
+  function getColor(d) {
+    return d > 5 ? "#ed0909" :
+           d > 4 ? "#ed6c09" :
+           d > 3 ? "#eda909" :
+           d > 2 ? "#fff41c" :
+           d > 1 ? "#b7ff1c" :
+                   "#2cea94";
+  };
+
+  //Create the legend
+  var legend = L.control({ position: 'bottomright' });
 
   //Add legend to map
-  legend.onAdd = function () {
+  legend.onAdd = function (map) {
 
     var div = L.DomUtil.create('div', 'info legend')
 
-    div.innerHTML = "<h3>Magnitude Legend</h3><table><tr><th> <= 5</th><td>Red</td></tr><tr><th> <= 4</th><td>Dark Orange</td></tr><tr><th> <= 3</th><td>Yellow Orange</td></tr><tr><th> <= 2</th><td>Yellow Green</td></tr><tr><th> >= 1</th><td>Blue Green</td></tr></table>";
-
+    // div.innerHTML = "<h3>Magnitude Legend</h3><table><tr><th> <= 5</th><td>Red</td></tr><tr><th> <= 4</th><td>Dark Orange</td></tr><tr><th> <= 3</th><td>Yellow Orange</td></tr><tr><th> <= 2</th><td>Yellow Green</td></tr><tr><th> >= 1</th><td>Blue Green</td></tr></table>";
+    for (var i = 0; i < grades.length; i++) {
+      div.innerHTML += "<i style=background:" + getColor(grades[i] + 1) + "></i>" + grades[i] + (grades[i + 1] ? "&ndash;" + grades[i + 1] + "<br>" : "+");
+    }
     return div;
   };
-
-  legend.addTo(myMap);
-
+  //   return div;
 };
+
+legend.addTo(myMap);
+
