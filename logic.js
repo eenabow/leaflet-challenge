@@ -38,12 +38,12 @@ d3.json(queryUrl, function (earthquakeData) {
 // Create circles from query URL and set style
 function mapCircles(feature, location) {
   options = {
-    // opacity: 1,
-    fillOpacity: .2,
+    fillOpacity: .5,
     fillColor: circleColor(feature.properties.mag),
-    // color: "#000000",
     radius: circleRadius(feature.properties.mag),
-    stroke: false
+    stroke: true,
+      weight: 0.5,
+      color:"#000000"
   }
 
   return L.circleMarker(location, options);
@@ -57,23 +57,18 @@ function popup(feature, layer) {
 
 function createMap(earthquakes) {
 
-  // Define streetmap and darkmap layers
-  var streetmap = L.tileLayer("https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}", {
+  // Define lightmap layer
+  var lightmap = L.tileLayer("https://api.mapbox.com/styles/v1/mapbox/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}", {
+    attribution: "Map data &copy; <a href=\"https://www.openstreetmap.org/\">OpenStreetMap</a> contributors, <a href=\"https://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA</a>, Imagery © <a href=\"https://www.mapbox.com/\">Mapbox</a>",
     maxZoom: 18,
-    id: "mapbox.streets",
-    accessToken: API_KEY
-  });
-
-  var darkmap = L.tileLayer("https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}", {
-    maxZoom: 18,
-    id: "mapbox.dark",
+    id: "light-v10",
     accessToken: API_KEY
   });
 
   // Define a baseMaps object to hold our base layers
   var baseMaps = {
-    "Street Map": streetmap,
-    "Dark Map": darkmap
+    // "Street Map": streetmap,
+    "Light Map": lightmap
   };
 
   // Create overlay object to hold our overlay layer
@@ -81,13 +76,13 @@ function createMap(earthquakes) {
     Earthquakes: earthquakes
   };
 
-  // Create our map, giving it the streetmap and earthquakes layers to display on load
+  // Create our map, giving it the lightmap and earthquakes layers to display on load
   var myMap = L.map("map", {
     center: [
       37.09, -95.71
     ],
     zoom: 5,
-    layers: [streetmap, earthquakes]
+    layers: [lightmap, earthquakes]
   });
 
   //Create the legned
@@ -105,10 +100,4 @@ function createMap(earthquakes) {
 
   legend.addTo(myMap);
 
-  // Create a layer control
-  // Pass in our baseMaps and overlayMaps
-  // Add the layer control to the map
-  L.control.layers(baseMaps, overlayMaps, {
-    collapsed: false
-  }).addTo(myMap)
 };
