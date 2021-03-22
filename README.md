@@ -1,12 +1,7 @@
 # Visualizing Earthquakes with Leaflet
 Used geojson API from the USGS to display world-wide earthquake data from the past week (3/14/21-3/21/21)
-
-### Process
-
 ![2-BasicMap](Images/2-BasicMap.png)
-
-Your first task is to visualize an earthquake data set.
-
+### Process
 1. **Data**
 
    ![3-Data](Images/3-Data.png)
