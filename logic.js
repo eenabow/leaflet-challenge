@@ -65,19 +65,9 @@ function createMap(earthquakes) {
     accessToken: API_KEY
   });
 
-  // Define a baseMaps object to hold our base layers
-  var baseMaps = {
-    // "Street Map": streetmap,
-    "Light Map": lightmap
-  };
-
-  // Create overlay object to hold our overlay layer
-  var overlayMaps = {
-    Earthquakes: earthquakes
-  };
 
   // Create our map, giving it the lightmap and earthquakes layers to display on load
-  var myMap = L.map("map", {
+  const myMap = L.map("map", {
     center: [
       37.09, -95.71
     ],
@@ -85,34 +75,31 @@ function createMap(earthquakes) {
     layers: [lightmap, earthquakes]
   });
 
-
-  grades = [5, 4, 3, 2, 1];
-
-  function getColor(d) {
-    return d > 5 ? "#ed0909" :
-           d > 4 ? "#ed6c09" :
-           d > 3 ? "#eda909" :
-           d > 2 ? "#fff41c" :
-           d > 1 ? "#b7ff1c" :
-                   "#2cea94";
-  };
-
   //Create the legend
-  var legend = L.control({ position: 'bottomright' });
+  var legend = L.control({
+    position: "bottomright"
+  });
 
   //Add legend to map
-  legend.onAdd = function (map) {
+  legend.onAdd = function () {
+    var div = L.DomUtil.create("div", "info legend");
+    // Declare colors and values to add to legend
+    var grades = [0, 1, 2, 3, 4, 5]
+    var labels = ['<strong> MAGNITUDE </strong>']
+    var colors = ["#2cea94", "#b7ff1c", "#fff41c", "#eda909","#ed6c09", "#ed0909"];
 
-    var div = L.DomUtil.create('div', 'info legend')
 
-    // div.innerHTML = "<h3>Magnitude Legend</h3><table><tr><th> <= 5</th><td>Red</td></tr><tr><th> <= 4</th><td>Dark Orange</td></tr><tr><th> <= 3</th><td>Yellow Orange</td></tr><tr><th> <= 2</th><td>Yellow Green</td></tr><tr><th> >= 1</th><td>Blue Green</td></tr></table>";
+    // Loop through colors and add to legend label
     for (var i = 0; i < grades.length; i++) {
-      div.innerHTML += "<i style=background:" + getColor(grades[i] + 1) + "></i>" + grades[i] + (grades[i + 1] ? "&ndash;" + grades[i + 1] + "<br>" : "+");
+      div.innerHTML += labels.push(
+        "<i style='background: " + colors[i] + "'></i> " +
+        grades[i] + (grades[i + 1] ? "&ndash;" + grades[i + 1] + "<br>" : "+"));
     }
+    div.innerHTML = labels.join('<br>');
     return div;
+
   };
-  //   return div;
+
+  legend.addTo(myMap)
+
 };
-
-legend.addTo(myMap);
-
